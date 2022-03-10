@@ -6,15 +6,12 @@
 # import required libraries
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 # Creating a Neural Network Model
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation
-from tensorflow.keras.optimizers import Adam
+from tensorflow import keras
+from tensorflow.keras import layers
 
 
 Data = pd.read_csv('./input/kc_house_data.csv')
@@ -38,15 +35,14 @@ X_test = s_scaler.transform(X_test.astype(np.float64))
 
 print(X_train.shape)
 
-# having 19 nueron is based on the number of available features
+# having 17 nueron is based on the number of available features
 
-model = Sequential()
-
-model.add(Dense(17,activation='relu'))
-model.add(Dense(17,activation='relu'))
-model.add(Dense(17,activation='relu'))
-model.add(Dense(17,activation='relu'))
-model.add(Dense(1))
+inputs = keras.Input(shape=(17,))
+x = layers.Dense(17, activation="relu")(inputs)
+x = layers.Dense(17, activation="relu")(x)
+x = layers.Dense(17, activation="relu")(x)
+x = layers.Dense(1, activation="relu")(x)
+model = keras.Model(inputs, x)
 
 model.compile(optimizer='adam',loss='mse')
 
